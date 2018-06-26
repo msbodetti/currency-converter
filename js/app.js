@@ -32,13 +32,30 @@
             countriesCurrencies = [currencies.results];
             const tx = db.transaction('objs', 'readwrite');
             const store = tx.objectStore('objs');
-            countriesCurrencies.forEach(function(currency) {
+            countriesCurrencies.forEach(currency => {
                 for (let value in currency) {
                     store.put(currency[value]);
                 }
             });
             return tx.complete;
         });
+    });
+
+    dbPromise.then(db => {
+        if(!db) return;
+        return db.transaction('objs')
+        .objectStore('objs').getAll();
+    }).then(allObjs => {
+        const fromCountry = document.getElementById('fromCountry');
+        const toCountry = document.getElementById('toCountry');
+        for (let value in allObjs) {
+            let countryAnchor = document.createElement('option');
+            countryAnchor.innerHTML = allObjs[value].currencyId;
+            fromCountry.appendChild(countryAnchor);
+            toCountry.appendChild(countryAnchor.cloneNode(true));
+            console.log(allObjs[value]);
+
+        }
     });
 
 })();
