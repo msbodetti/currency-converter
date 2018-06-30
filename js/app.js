@@ -25,13 +25,14 @@
     const insertCurrencies = (data) => {
         const fromCountry = document.getElementById('fromCountry');
         const toCountry = document.getElementById('toCountry');
+        const initCurrency = document.getElementById('initCurrency');
         for (let value in data) {
             let countryAnchor = document.createElement('option');
             countryAnchor.innerHTML = data[value].id;
+            countryAnchor.value = data[value].id;
             fromCountry.appendChild(countryAnchor);
             toCountry.appendChild(countryAnchor.cloneNode(true));
-            //console.log(allObjs[value]);
-
+            initCurrency.innerHTML = 'AED';
         }
     }
     fetch(apiURL)
@@ -63,4 +64,27 @@
         insertCurrencies(allObjs);
     });
 
+    const convertCurrency = () => {
+        const fromCountry = document.getElementById('fromCountry').value;
+        const toCountry = document.getElementById('toCountry').value;
+        const fromInput = document.getElementById('fromValue').value;
+        const toInput = document.getElementById('toValue');
+        const conversionCalc = document.getElementById('conversion');
+        const initCurrency = document.getElementById('initCurrency');
+        if(fromInput > 0 || toInput > 0)
+        fetch(`https://free.currencyconverterapi.com/api/v5/convert?q=${fromCountry}_${toCountry}&compact=ultra`).then(function(response) {
+            return response.json();
+            }).then(function(rates) {
+               for(let rate in rates){
+                 let calc = rates[rate]; 
+                 let total = (calc * fromInput); 
+                 if(total)
+                 initCurrency.innerHTML = fromCountry;
+                 toInput.innerHTML = total + ' ' + toCountry;
+                 conversionCalc.innerHTML = '1 ' + fromCountry + ' = ' + calc + ' ' + toCountry;
+               }
+        });
+    }
+
+    document.querySelector('#convert').addEventListener('click', convertCurrency);
 })();

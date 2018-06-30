@@ -1,0 +1,32 @@
+input#fromValue{
+ margin: 0.2em 0;
+ text-align: center;
+}
+#initCurrency{
+    margin: 0.2em 0;
+}
+.select {
+    width: 100%;
+    select#fromCountry, select#toCountry{
+        margin: 0;
+        width: 100%;
+    }
+}
+a#convert {
+    width: 100%;
+    background: #ff71a6;
+}
+div#toValue {
+    font-size: 2em;
+}
+.select:not(.is-multiple):not(.is-loading)::after{
+    border-color: #ac73fe;
+}
+@media (min-width: 575px) {
+    #initCurrency{
+        margin: 1em 0;
+    }
+    input#fromValue{
+        margin: 2em 0;
+    }
+}

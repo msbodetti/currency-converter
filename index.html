@@ -10,39 +10,49 @@
 
     <title>Currency Converter</title>
     <link rel="stylesheet" href="css/bulma.min.css">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/style.css">
   </head>
 
   <body>
     <section class="section">
       <div class="container">
-        <h1 class="title">
-          Currency Converter
-        </h1>
-        <p class="subtitle">
-          
-        </p>     
-      </div>
-    </section>
-    <section class="section">
-      <div class="container">
         <div class="columns">
-          <div class="column">
-              <div class="select">
-                  <select id="fromCountry">
-                  </select>
+          <div class="column is-half is-offset-one-quarter ">
+              <h1 class="title">
+                  Currency Converter
+                </h1>   
+              <div class="columns">
+                <div class="column ">
+                    <input class="input is-large" id="fromValue" type="text" placeholder="0">
+                </div>
+                <div class="column is-one-fifth is-size-2 has-text-centered" id="initCurrency">
+                  
+                </div>
               </div>
-              <input class="input" id="fromValue" type="text" placeholder="0">
-          </div>
-          <div class="column">
-            to
-          </div>
-          <div class="column">
-              <div class="select">
-                  <select id="toCountry">
-                  </select>
+              <div class="columns">
+                <div class="column">
+                    <div class="select">
+                        <select id="fromCountry">
+                        </select>
+                    </div>
+                </div>
+                <div class="column is-one-fifth has-text-centered">
+                  to
+                </div>
+                <div class="column">
+                  <div class="select">
+                      <select id="toCountry">
+                      </select>
+                  </div>
+                </div>
+                <div class="column is-one-fifth">
+                  <a class="button is-success" id="convert">
+                    <span>Go</span>
+                  </a>
+                </div>
               </div>
-              <input class="input" id="toValue" type="text" placeholder="0">
+              <div id="toValue" class="has-text-centered"></div>
+              <div id="conversion" class="has-text-centered is-size-7 is-italic"></div>
           </div>
         </div>
       </div>
