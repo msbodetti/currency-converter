@@ -1,18 +1,18 @@
 (function() {
     'use strict';
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
+        window.addEventListener('load', () => {
           navigator.serviceWorker.register('sw.js').then(function(registration) {
             // Registration was successful
             console.log('ServiceWorker registration successful with scope: ', registration.scope);
-          }, function(err) {
+          }, err => {
             // registration failed :(
             console.log('ServiceWorker registration failed: ', err);
           });
         });
     }
 
-    const apiURL = `https://free.currencyconverterapi.com/api/v5/countries`;   
+    const apiURL = `https://free.currencyconverterapi.com/api/v5/currencies`;   
     let countriesCurrencies;
     const dbPromise = idb.open('countries-currencies', 1, upgradeDB => {
         // Note: we don't use 'break' in this switch statement,
@@ -22,11 +22,23 @@
             upgradeDB.createObjectStore('objs', {keyPath: 'id'});
         }
     });
+    const insertCurrencies = (data) => {
+        const fromCountry = document.getElementById('fromCountry');
+        const toCountry = document.getElementById('toCountry');
+        for (let value in data) {
+            let countryAnchor = document.createElement('option');
+            countryAnchor.innerHTML = data[value].id;
+            fromCountry.appendChild(countryAnchor);
+            toCountry.appendChild(countryAnchor.cloneNode(true));
+            //console.log(allObjs[value]);
+
+        }
+    }
     fetch(apiURL)
-    .then(function(response) {
+    .then( response => {
         return response.json();
     })
-    .then(function(currencies) {
+    .then( currencies => {
         dbPromise.then(db => {
             if(!db) return;
             countriesCurrencies = [currencies.results];
@@ -37,7 +49,9 @@
                     store.put(currency[value]);
                 }
             });
-            return tx.complete;
+            return tx.objectStore('objs').getAll();
+        }).then(stored =>{
+            insertCurrencies(stored);
         });
     });
 
@@ -46,16 +60,7 @@
         return db.transaction('objs')
         .objectStore('objs').getAll();
     }).then(allObjs => {
-        const fromCountry = document.getElementById('fromCountry');
-        const toCountry = document.getElementById('toCountry');
-        for (let value in allObjs) {
-            let countryAnchor = document.createElement('option');
-            countryAnchor.innerHTML = allObjs[value].currencyId;
-            fromCountry.appendChild(countryAnchor);
-            toCountry.appendChild(countryAnchor.cloneNode(true));
-            console.log(allObjs[value]);
-
-        }
+        insertCurrencies(allObjs);
     });
 
 })();
