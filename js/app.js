@@ -2,7 +2,7 @@
     'use strict';
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('sw.js').then(function(registration) {
+          navigator.serviceWorker.register('sw.js').then(registration => {
             // Registration was successful
             console.log('ServiceWorker registration successful with scope: ', registration.scope);
           }, err => {
@@ -72,12 +72,12 @@
         const conversionCalc = document.getElementById('conversion');
         const initCurrency = document.getElementById('initCurrency');
         if(fromInput > 0 || toInput > 0)
-        fetch(`https://free.currencyconverterapi.com/api/v5/convert?q=${fromCountry}_${toCountry}&compact=ultra`).then(function(response) {
+        fetch(`https://free.currencyconverterapi.com/api/v5/convert?q=${fromCountry}_${toCountry}&compact=ultra`).then(response => {
             return response.json();
             }).then(rates => {
                for(let rate in rates){
                  let calc = rates[rate]; 
-                 let total = (calc * fromInput); 
+                 let total = (calc * fromInput).toFixed(2); 
                  localStorage.setItem(`${fromCountry}_${toCountry}`, calc);
                  if(total)
                  initCurrency.innerHTML = fromCountry;
@@ -87,7 +87,7 @@
         }).catch( nosucces => {
             const storedConversion = localStorage.getItem(`${fromCountry}_${toCountry}`);
             if(storedConversion){
-                let total = (storedConversion * fromInput);
+                let total = (storedConversion * fromInput).toFixed(2);
                 if(total)
                 initCurrency.innerHTML = fromCountry;
                 toInput.innerHTML = total + ' ' + toCountry;
