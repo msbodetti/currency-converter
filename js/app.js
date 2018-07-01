@@ -74,15 +74,29 @@
         if(fromInput > 0 || toInput > 0)
         fetch(`https://free.currencyconverterapi.com/api/v5/convert?q=${fromCountry}_${toCountry}&compact=ultra`).then(function(response) {
             return response.json();
-            }).then(function(rates) {
+            }).then(rates => {
                for(let rate in rates){
                  let calc = rates[rate]; 
                  let total = (calc * fromInput); 
+                 localStorage.setItem(`${fromCountry}_${toCountry}`, calc);
                  if(total)
                  initCurrency.innerHTML = fromCountry;
                  toInput.innerHTML = total + ' ' + toCountry;
                  conversionCalc.innerHTML = '1 ' + fromCountry + ' = ' + calc + ' ' + toCountry;
                }
+        }).catch( nosucces => {
+            const storedConversion = localStorage.getItem(`${fromCountry}_${toCountry}`);
+            if(storedConversion){
+                let total = (storedConversion * fromInput);
+                if(total)
+                initCurrency.innerHTML = fromCountry;
+                toInput.innerHTML = total + ' ' + toCountry;
+                conversionCalc.innerHTML = '1 ' + fromCountry + ' = ' + calc + ' ' + toCountry;
+            }
+            else{
+                toInput.innerHTML = 'Oops, something went wrong. Please try again later.';
+                conversionCalc.innerHTML = '';
+            }
         });
     }
 
