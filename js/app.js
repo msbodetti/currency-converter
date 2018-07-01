@@ -3,10 +3,8 @@
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('sw.js').then(registration => {
-            // Registration was successful
             console.log('ServiceWorker registration successful with scope: ', registration.scope);
           }, err => {
-            // registration failed :(
             console.log('ServiceWorker registration failed: ', err);
           });
         });
@@ -15,8 +13,6 @@
     const apiURL = `https://free.currencyconverterapi.com/api/v5/currencies`;   
     let countriesCurrencies;
     const dbPromise = idb.open('countries-currencies', 1, upgradeDB => {
-        // Note: we don't use 'break' in this switch statement,
-        // the fall-through behaviour is what we want.
         switch (upgradeDB.oldVersion) {
             case 0:
             upgradeDB.createObjectStore('objs', {keyPath: 'id'});
@@ -99,6 +95,5 @@
             }
         });
     }
-
     document.querySelector('#convert').addEventListener('click', convertCurrency);
 })();
